@@ -1,10 +1,6 @@
 # https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/displaying-a-sponsor-button-in-your-repository
 
+# GitHub Sponsors поки не підтримує Україну — лишено на майбутнє
 github: [RiasJ1Dar]
 
-# Розкоментуй потрібне і впиши свій логін:
-# patreon: username
-# ko_fi: username
-# buy_me_a_coffee: username
-# liberapay: username
-# custom: ["https://paypal.me/username"]
+custom: ["https://send.monobank.ua/jar/4XsDm8vmF2"]
