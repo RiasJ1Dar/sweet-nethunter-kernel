@@ -60,6 +60,23 @@ make O=out ARCH=arm64 \
 make -j$(nproc) O=out ARCH=arm64 [same flags]
 ```
 
+For the KernelSU + SUSFS variant, use `config/sweet_defconfig.with-kernelsu` instead of
+`sweet_defconfig` (see gotcha 4 for the matching KernelSU branch).
+
+## Flash
+
+`anykernel3/` already holds the prebuilt kernel (`Image.gz`, `dtb`, `dtbo.img`) and the Wi-Fi
+modules in `modules/vendor/lib/modules/`. After your own build, replace those files with the new
+ones. Then pack the folder's contents into a zip:
+
+```sh
+cd anykernel3
+zip -r9 ../sweet-nethunter.zip *
+```
+
+Flash the zip from a custom recovery or a kernel flasher app. The script (`anykernel.sh`) only
+proceeds on `sweet` / `sweetin` and installs the modules along with the kernel (`do.modules=1`).
+
 ## Gotchas worth knowing
 
 **1. Symbol clash: `ath9k_htc` vs vendor Qualcomm driver**
