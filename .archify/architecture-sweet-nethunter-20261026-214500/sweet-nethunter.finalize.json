@@ -1,0 +1,397 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-10-26T21:21:17.092Z",
+  "specification": {
+    "path": "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel\\.archify\\architecture-sweet-nethunter-20261026-214500\\candidate.json",
+    "sha256": "d4db3954eb57241e50be2d5d5e431e4ce87c2d0118245aabf6698f0bf4f100f1",
+    "bytes": 6137
+  },
+  "artifact": {
+    "path": "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel\\.archify\\architecture-sweet-nethunter-20261026-214500\\sweet-nethunter.html",
+    "sha256": "29aefbb5c1d628c415c63cc58f93c2d33e0d56242a76b9873b9fdd742a1283f3",
+    "bytes": 833929
+  },
+  "stages": {
+    "validate": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": null,
+      "execution": "embedded-in-deliver",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\Public\\archify-skill\\bin\\archify.mjs",
+        "deliver",
+        "architecture",
+        "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel\\.archify\\architecture-sweet-nethunter-20261026-214500\\candidate.json",
+        "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel\\.archify\\architecture-sweet-nethunter-20261026-214500\\sweet-nethunter.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "validate",
+        "specification": {
+          "sha256": "d4db3954eb57241e50be2d5d5e431e4ce87c2d0118245aabf6698f0bf4f100f1",
+          "bytes": 6137
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        }
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 956,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\Public\\archify-skill\\bin\\archify.mjs",
+        "deliver",
+        "architecture",
+        "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel\\.archify\\architecture-sweet-nethunter-20261026-214500\\candidate.json",
+        "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel\\.archify\\architecture-sweet-nethunter-20261026-214500\\sweet-nethunter.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "dedeeb38-ee8b-42cc-96ad-65e6bc3f9797",
+        "ok": true,
+        "command": "deliver",
+        "type": "architecture",
+        "input": "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel\\.archify\\architecture-sweet-nethunter-20261026-214500\\candidate.json",
+        "output": "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel\\.archify\\architecture-sweet-nethunter-20261026-214500\\sweet-nethunter.html",
+        "specification": {
+          "sha256": "d4db3954eb57241e50be2d5d5e431e4ce87c2d0118245aabf6698f0bf4f100f1",
+          "bytes": 6137
+        },
+        "artifact": {
+          "sha256": "29aefbb5c1d628c415c63cc58f93c2d33e0d56242a76b9873b9fdd742a1283f3",
+          "bytes": 833929
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        },
+        "evidence": {
+          "verified": true,
+          "repository": "https://github.com/RiasJ1Dar/sweet-nethunter-kernel",
+          "revision": "b3c1e6239336f3780afa0605079109615fa1fdd5",
+          "references": 17
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    },
+    "check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 248,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\Public\\archify-skill\\bin\\archify.mjs",
+        "check",
+        "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel\\.archify\\architecture-sweet-nethunter-20261026-214500\\sweet-nethunter.html",
+        "--require-provenance"
+      ],
+      "receipt": {
+        "ok": true,
+        "file": "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel\\.archify\\architecture-sweet-nethunter-20261026-214500\\sweet-nethunter.html",
+        "artifact": {
+          "sha256": "29aefbb5c1d628c415c63cc58f93c2d33e0d56242a76b9873b9fdd742a1283f3",
+          "bytes": 833929
+        },
+        "checks": [
+          {
+            "name": "single_svg",
+            "ok": true,
+            "details": [
+              "found 1 <svg> block(s)"
+            ]
+          },
+          {
+            "name": "finite_svg",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "orthogonal_arrows",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "label_route_clearance",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_crossings",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_corridors",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "container_border_runs",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "route_rhythm",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "legend_clearance",
+            "ok": true,
+            "details": []
+          }
+        ],
+        "composition": {
+          "schemaVersion": 1,
+          "profile": "showcase",
+          "status": "pass",
+          "summary": {
+            "errors": 0,
+            "warnings": 0
+          },
+          "metrics": {
+            "properCrossings": 0,
+            "resolvedCrossovers": 0,
+            "ambiguousCorridors": 0,
+            "arrowheadCollisions": 0,
+            "containerBorderRuns": 0,
+            "labelRouteClearanceIssues": 0,
+            "labelCanvasOverflowIssues": 0,
+            "minLabelRouteClearance": 9.8,
+            "desktopReadabilityIssues": 0,
+            "viewportHeightIssues": 0,
+            "minProjectedNodeTextPx": 7.591836734693878,
+            "maxBends": 3,
+            "routesOverSuggestedBends": 1,
+            "maxStretch": 1,
+            "routesOverSuggestedStretch": 0,
+            "minSegmentPx": 24,
+            "minInteriorSegmentPx": 63.7,
+            "shortSegmentCount": 0,
+            "shortEndpointSegmentCount": 0,
+            "shortInteriorSegmentCount": 0,
+            "microSegmentCount": 0
+          },
+          "suggestedLimits": {
+            "bendsPerRelationship": 2,
+            "stretch": 1.35,
+            "segmentPx": 16,
+            "microSegmentPx": 8
+          },
+          "routeReview": {
+            "crossings": [],
+            "detours": [
+              {
+                "relationship": {
+                  "id": "toolchain-build",
+                  "from": "toolchain",
+                  "to": "build",
+                  "label": "clang",
+                  "collectionIndex": 3,
+                  "artifactIndex": 4
+                },
+                "bends": 3,
+                "stretch": 1
+              }
+            ]
+          },
+          "leadingSpace": {
+            "measured": true,
+            "emptyTopPx": 48,
+            "emptyTopRatio": 0.095,
+            "occupiedTop": 48,
+            "viewBoxTop": 0,
+            "canvasHeight": 506,
+            "typicalNodeHeight": 60,
+            "reviewSuggested": false
+          },
+          "desktopReadability": {
+            "budgetBasis": "recognized-declared-wide",
+            "readerContract": "declared-wide-v1",
+            "availableDiagramWidth": 930,
+            "actualBudgetPx": 930,
+            "actualReaderWidth": 960,
+            "desiredReaderWidth": 960,
+            "viewportCap": 1376,
+            "limit": "source-size",
+            "requestedTargetPx": 7.5,
+            "requestedTargetMet": true,
+            "hardFloorPx": 6,
+            "hardFloorMet": true,
+            "minimumOwner": {
+              "kind": "edge",
+              "id": "upstream-build",
+              "from": "upstream",
+              "to": "build"
+            },
+            "minimumSourceTextPx": 8,
+            "minimumProjectedTextPx": 7.591836734693878,
+            "semanticTextCount": 33
+          },
+          "issues": []
+        },
+        "provenance": "current",
+        "deliveryReceiptId": "dedeeb38-ee8b-42cc-96ad-65e6bc3f9797"
+      }
+    },
+    "browser-check": {
+      "status": "fail",
+      "exitCode": 1,
+      "durationMs": 187,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\Public\\archify-skill\\bin\\archify.mjs",
+        "browser-check",
+        "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel\\.archify\\architecture-sweet-nethunter-20261026-214500\\sweet-nethunter.html",
+        "--json",
+        "--require-provenance"
+      ],
+      "execution": "in-process",
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "browser-check",
+        "evidenceKind": "automated-browser",
+        "status": "fail",
+        "visualReview": "not-requested",
+        "provenance": "current",
+        "deliveryReceiptId": "dedeeb38-ee8b-42cc-96ad-65e6bc3f9797",
+        "artifact": {
+          "path": "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel\\.archify\\architecture-sweet-nethunter-20261026-214500\\sweet-nethunter.html",
+          "sha256": "29aefbb5c1d628c415c63cc58f93c2d33e0d56242a76b9873b9fdd742a1283f3",
+          "bytes": 833929
+        },
+        "state": {
+          "detail": "read",
+          "motion": "still"
+        },
+        "chrome": {
+          "status": "available",
+          "executable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+        },
+        "diagnostics": [
+          {
+            "code": "viewer/browser-check-runtime",
+            "severity": "error",
+            "message": "browser-check could not complete its Chrome inspection.",
+            "subject": {
+              "artifact": "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel\\.archify\\architecture-sweet-nethunter-20261026-214500\\sweet-nethunter.html"
+            },
+            "evidence": {
+              "reason": "Chrome DevTools write pipe failed: stream closed\nChrome process: still running.\nWindows browser startup may have relaunched before connecting to the DevTools pipe. Retry from a non-elevated PowerShell opened normally, outside an elevated or compatibility-mode parent. Archify does not disable browser de-elevation or the sandbox to preserve pipe handles.\nChrome transport: Node v26.5.0, libuv 1.52.1, win32; pid=18880, exitCode=null, signalCode=null.\nChrome read pipe: readable=true, ended=false, destroyed=false, receivedBytes=0, messages=0, bufferedBytes=0.\nChrome write pipe: writable=false, ended=true, destroyed=true, completedWrites=1, writtenBytes=50, bufferedBytes=0."
+            },
+            "supportedFixes": [
+              "resolve the reported Chrome inspection error, then rerun browser-check"
+            ]
+          }
+        ],
+        "containment": {
+          "status": "fail",
+          "policy": "fit-or-reader-declared-readable-vertical-scroll",
+          "viewports": []
+        },
+        "themeStates": {
+          "status": "fail",
+          "viewports": []
+        },
+        "readability": {
+          "status": "fail",
+          "minimumProjectedNodeTextPx": 6,
+          "viewports": []
+        },
+        "viewerChrome": {
+          "status": "fail",
+          "viewports": []
+        },
+        "captures": {
+          "status": "not-requested",
+          "screenshots": [],
+          "contactSheet": null
+        },
+        "sidecars": {
+          "receipt": "sweet-nethunter.browser-check.json",
+          "files": []
+        },
+        "error": "Chrome DevTools write pipe failed: stream closed\nChrome process: still running.\nWindows browser startup may have relaunched before connecting to the DevTools pipe. Retry from a non-elevated PowerShell opened normally, outside an elevated or compatibility-mode parent. Archify does not disable browser de-elevation or the sandbox to preserve pipe handles.\nChrome transport: Node v26.5.0, libuv 1.52.1, win32; pid=18880, exitCode=null, signalCode=null.\nChrome read pipe: readable=true, ended=false, destroyed=false, receivedBytes=0, messages=0, bufferedBytes=0.\nChrome write pipe: writable=false, ended=true, destroyed=true, completedWrites=1, writtenBytes=50, bufferedBytes=0."
+      }
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [
+    {
+      "code": "viewer/browser-check-runtime",
+      "severity": "error",
+      "message": "browser-check could not complete its Chrome inspection.",
+      "subject": {
+        "artifact": "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel\\.archify\\architecture-sweet-nethunter-20261026-214500\\sweet-nethunter.html"
+      },
+      "evidence": {
+        "reason": "Chrome DevTools write pipe failed: stream closed\nChrome process: still running.\nWindows browser startup may have relaunched before connecting to the DevTools pipe. Retry from a non-elevated PowerShell opened normally, outside an elevated or compatibility-mode parent. Archify does not disable browser de-elevation or the sandbox to preserve pipe handles.\nChrome transport: Node v26.5.0, libuv 1.52.1, win32; pid=18880, exitCode=null, signalCode=null.\nChrome read pipe: readable=true, ended=false, destroyed=false, receivedBytes=0, messages=0, bufferedBytes=0.\nChrome write pipe: writable=false, ended=true, destroyed=true, completedWrites=1, writtenBytes=50, bufferedBytes=0."
+      },
+      "supportedFixes": [
+        "resolve the reported Chrome inspection error, then rerun browser-check"
+      ]
+    }
+  ],
+  "evidence": {
+    "receipt": "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel\\.archify\\architecture-sweet-nethunter-20261026-214500\\sweet-nethunter.finalize.json",
+    "summaryReceipt": "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel\\.archify\\architecture-sweet-nethunter-20261026-214500\\sweet-nethunter.finalize-summary.json",
+    "browserCheckReceipt": "C:\\Users\\Public\\archify-20261026\\sweet-nethunter-kernel\\.archify\\architecture-sweet-nethunter-20261026-214500\\sweet-nethunter.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "browser-check",
+  "finishedAt": "2026-10-26T21:21:18.897Z",
+  "durationMs": 1804,
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-26T17:28:59.599Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  }
+}

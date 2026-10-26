@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "NetHunter kernel for sweet: from sources to monitor mode",
+    "locale": "en",
+    "output": ".archify/architecture-sweet-nethunter-20261026-214500/sweet-nethunter.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/RiasJ1Dar/sweet-nethunter-kernel.git",
+      "provider": "github",
+      "link_mode": "web",
+      "revision": "b3c1e6239336f3780afa0605079109615fa1fdd5"
+    }
+  },
+  "layout": {
+    "mode": "grid",
+    "origin": [40, 48],
+    "cols": 5,
+    "cellW": 125,
+    "cellH": 70,
+    "gapX": 70,
+    "gapY": 95
+  },
+  "components": [
+    {
+      "id": "upstream", "type": "external", "label": "PixelOS sources", "sublabel": "sm6150 kernel",
+      "row": 0, "col": 0,
+      "sources": [{ "path": "README.md", "line": 43, "end_line": 44, "label": "branch sixteen-qpr2" }]
+    },
+    {
+      "id": "build", "type": "backend", "label": "kernel build", "sublabel": "make O=out arm64",
+      "row": 0, "col": 1,
+      "sources": [
+        { "path": "README.md", "line": 50, "end_line": 60, "label": "build flags" },
+        { "path": "README.md", "line": 79, "end_line": 85, "label": "CROSS_COMPILE_COMPAT" }
+      ]
+    },
+    {
+      "id": "image", "type": "database", "label": "Image.gz + dtb", "sublabel": "prebuilt/",
+      "row": 0, "col": 2,
+      "sources": [
+        { "path": "prebuilt/Image.gz", "label": "kernel image" },
+        { "path": "prebuilt/dtbo.img", "label": "dtbo" }
+      ]
+    },
+    {
+      "id": "anykernel", "type": "backend", "label": "AnyKernel3 zip", "sublabel": "flashable package",
+      "row": 0, "col": 3,
+      "sources": [
+        { "path": "anykernel3/anykernel.sh", "label": "flash script" },
+        { "path": "anykernel3/tools/ak3-core.sh", "label": "core helpers" }
+      ]
+    },
+    {
+      "id": "device", "type": "external", "label": "sweet device", "sublabel": "PixelOS 16.2",
+      "row": 0, "col": 4,
+      "sources": [{ "path": "README.md", "line": 3, "end_line": 6, "label": "tested target" }]
+    },
+    {
+      "id": "patches", "type": "database", "label": "patches/", "sublabel": "SUSFS, hooks",
+      "row": 1, "col": 0,
+      "sources": [
+        { "path": "patches/all-changes.patch", "label": "single diff" },
+        { "path": "patches/02-manual-syscall-hooks.patch", "label": "non-GKI hooks" }
+      ]
+    },
+    {
+      "id": "defconfig", "type": "database", "label": "sweet_defconfig", "sublabel": "mac80211 enabled",
+      "row": 1, "col": 1,
+      "sources": [
+        { "path": "config/sweet_defconfig", "label": "Magisk build" },
+        { "path": "config/sweet_defconfig.with-kernelsu", "label": "KernelSU variant" }
+      ]
+    },
+    {
+      "id": "modules", "type": "database", "label": "wireless .ko", "sublabel": "ath9k, rt2800",
+      "row": 1, "col": 2,
+      "sources": [
+        { "path": "anykernel3/modules/vendor/lib/modules/ath9k_htc.ko", "label": "AR9271 driver" },
+        { "path": "README.md", "line": 65, "end_line": 77, "label": "why modules, not =y" }
+      ]
+    },
+    {
+      "id": "firmware", "type": "security", "label": "vendor firmware", "sublabel": "systemless module",
+      "row": 1, "col": 3,
+      "sources": [{ "path": "README.md", "line": 87, "end_line": 91, "label": "SELinux denies /data" }]
+    },
+    {
+      "id": "adapter", "type": "external", "label": "USB Wi-Fi", "sublabel": "AR9271 tested",
+      "row": 1, "col": 4,
+      "sources": [{ "path": "README.md", "line": 12, "end_line": 25, "label": "capture evidence" }]
+    },
+    {
+      "id": "toolchain", "type": "external", "label": "proton-clang", "sublabel": "LLVM cross",
+      "row": 2, "col": 0,
+      "sources": [{ "path": "README.md", "line": 49, "end_line": 58, "label": "compiler set" }]
+    }
+  ],
+  "connections": [
+    { "id": "upstream-build", "from": "upstream", "to": "build", "label": "sources", "variant": "emphasis" },
+    { "id": "patches-build", "from": "patches", "to": "build", "label": "patch" },
+    { "id": "defconfig-build", "from": "defconfig", "to": "build", "label": "config", "fromSide": "top", "toSide": "bottom" },
+    { "id": "toolchain-build", "from": "toolchain", "to": "build", "label": "clang", "fromSide": "right", "toSide": "bottom" },
+    { "id": "build-image", "from": "build", "to": "image", "label": "Image.gz", "variant": "emphasis" },
+    { "id": "build-modules", "from": "build", "to": "modules", "label": "=m" },
+    { "id": "image-zip", "from": "image", "to": "anykernel", "label": "pack", "variant": "emphasis" },
+    { "id": "modules-zip", "from": "modules", "to": "anykernel", "label": "drivers" },
+    { "id": "zip-device", "from": "anykernel", "to": "device", "label": "flash", "variant": "emphasis" },
+    { "id": "fw-device", "from": "firmware", "to": "device", "label": "htc_9271", "variant": "security" },
+    { "id": "device-adapter", "from": "device", "to": "adapter", "label": "monitor", "variant": "emphasis", "fromSide": "bottom", "toSide": "top" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "What the kernel adds",
+      "items": [
+        "mac80211 stack, absent in stock, enabled as CONFIG_MAC80211=y",
+        "Atheros AR9271/AR7010, Ralink RT2800 and Realtek RTL8187/RTL8192CU as modules",
+        "Verified capture: 802.11 radiotap, 907 frames in 15 s, 0 dropped by the kernel"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Why drivers are modules",
+      "items": [
+        "ath9k_htc and the vendor Qualcomm driver both use the HTC prefix",
+        "Building =y fails at link time with duplicate symbol htc_stop",
+        "Modules keep those symbols local to the .ko"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Traps worth knowing",
+      "items": [
+        "CROSS_COMPILE_COMPAT is required or the 32-bit VDSO links with the host linker",
+        "firmware_class.path under /data returns EACCES: SELinux denies the kernel domain",
+        "KernelSU-Next is incompatible with SUSFS patches after its tree restructure",
+        "The only matching pair found: KernelSU susfs-legacy with susfs4ksu kernel-4.14"
+      ]
+    }
+  ]
+}
