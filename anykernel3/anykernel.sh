@@ -4,7 +4,7 @@
 ### AnyKernel setup
 # global properties
 properties() { '
-kernel.string=NetHunter sweet 4.14.356 (KernelSU+SUSFS, ath9k_htc)
+kernel.string=NetHunter sweet 4.14.356 (Magisk, ath9k_htc monitor+injection)
 do.devicecheck=1
 do.modules=1
 do.systemless=1
