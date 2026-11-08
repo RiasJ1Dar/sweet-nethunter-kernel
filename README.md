@@ -19,6 +19,14 @@ Tested adapter: **TP-Link TL-WN722N v1** (Atheros AR9271) — monitor mode and
 injection both confirmed (`802.11 radiotap`, 907 frames in 15 s, 0 dropped;
 deauthentication injection working).
 
+## Prebuilt downloads
+
+Ready-made files are on the
+[v2.0-lineage23.2 release](https://github.com/RiasJ1Dar/sweet-nethunter-kernel/releases/tag/v2.0-lineage23.2):
+`boot-nethunter-v2.img` for `fastboot`, an AnyKernel3 zip, and the two Magisk
+modules (drivers, and the `kali` / `kssh` / `kvnc` helpers). Building from source
+is only needed if you want to change the config.
+
 ## What this adds
 
 Stock `sweet` kernels ship `cfg80211` but **no `mac80211`**, so no external
