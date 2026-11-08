@@ -30,7 +30,9 @@ case "${1:-status}" in
   status)
       printf 'sshd:    '; inroot 'pgrep -x sshd >/dev/null' && echo працює || echo зупинено
       printf 'порт:    '; $BB netstat -tln 2>/dev/null | grep -q ":$PORT " && echo "$PORT слухає" || echo "$PORT не слухає"
-      ip -4 addr show wlan0 2>/dev/null | awk '/inet /{split($2,a,"/"); print "адреса: ssh root@"a[1]}'
+      a=$(ip -4 -o addr show 2>/dev/null | awk '$2!="lo"{split($4,b,"/"); print $2, b[1]}' \
+            | sort -k1,1 | awk '/^wlan/{print $2; f=1; exit} {l=$2} END{if(!f && l) print l}')
+      [ -n "$a" ] && echo "адреса: ssh root@$a"
       ;;
   key)
       inroot 'cat /root/.ssh/authorized_keys 2>/dev/null || echo "(ключів немає)"'

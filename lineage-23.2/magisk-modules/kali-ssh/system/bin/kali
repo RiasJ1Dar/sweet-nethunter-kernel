@@ -10,17 +10,21 @@ die() { echo "[-] $*"; exit 1; }
 [ -x "$BB" ] || die "busybox не знайдено ($BB)"
 [ -d "$MNT" ] || die "chroot Kali відсутній: $MNT"
 
-bindro() { $BB mountpoint -q "$2" || $BB mount -o bind "$1" "$2" 2>/dev/null; }
+# mountpoint -q дає хибний «ні» для bind усередині того самого f2fs,
+# тому дивимось у таблицю монтувань — інакше прив'язки накопичуються дублями.
+is_bound() { $BB mount | grep -q " on $1 type "; }
+bindro() { is_bound "$2" || $BB mount -o bind "$1" "$2" 2>/dev/null; }
 
 k_mount() {
-    $BB mountpoint -q "$MNT/proc" && return 0
     mkdir -p "$MNT/proc" "$MNT/sys" "$MNT/dev/pts" "$MNT/dev/shm" \
              "$MNT/sdcard" "$MNT/loot" "$MNT/run" 2>/dev/null
     mkdir -p "$LOOT" 2>/dev/null
 
-    $BB mount -t proc  proc  "$MNT/proc"
-    $BB mount -t sysfs sysfs "$MNT/sys"
-    $BB mount -o bind /dev   "$MNT/dev"
+    # Кожну точку перевіряємо окремо: якщо /proc уже змонтував хтось інший
+    # (KeX, NetHunter), решта все одно має бути на місці.
+    $BB mountpoint -q "$MNT/proc"    || $BB mount -t proc  proc  "$MNT/proc"
+    $BB mountpoint -q "$MNT/sys"     || $BB mount -t sysfs sysfs "$MNT/sys"
+    is_bound "$MNT/dev"     || $BB mount -o bind /dev   "$MNT/dev"
     $BB mountpoint -q "$MNT/dev/pts" || $BB mount -t devpts devpts "$MNT/dev/pts"
     $BB mountpoint -q "$MNT/dev/shm" || \
         $BB mount -o rw,nosuid,nodev,mode=1777 -t tmpfs tmpfs "$MNT/dev/shm"
@@ -53,7 +57,7 @@ case "${1:-status}" in
   shell)  k_mount; shift; [ $# -gt 0 ] && inroot "$@" || $BB chroot "$MNT" /bin/bash -l ;;
   status)
       printf 'chroot:  '; $BB mountpoint -q "$MNT/proc" && echo змонтовано || echo "НЕ змонтовано"
-      printf 'loot:    '; $BB mountpoint -q "$MNT/loot" && echo "/loot -> /sdcard/Loot" || echo "не прив'язано"
+      printf 'loot:    '; is_bound "$MNT/loot" && echo "/loot -> /sdcard/Loot" || echo "не прив'язано"
       printf 'розмір:  '; du -sh "$MNT" 2>/dev/null | cut -f1
       ;;
   *) echo "використання: kali {mount|umount|shell [команда]|status}"; exit 1 ;;
