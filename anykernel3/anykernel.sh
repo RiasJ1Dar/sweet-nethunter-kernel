@@ -4,7 +4,7 @@
 ### AnyKernel setup
 # global properties
 properties() { '
-kernel.string=NetHunter sweet 4.14.356 (Magisk, ath9k_htc monitor+injection)
+kernel.string=sweet 4.14.357 #2 - mac80211 + Bluetooth + SDR + USB-serial (LineageOS 23.2)
 do.devicecheck=1
 do.modules=1
 do.systemless=1

@@ -1,0 +1,42 @@
+#!/system/bin/sh
+# kssh — sshd у chroot Kali: start | stop | status | key | log
+PORT=22
+MNT=/data/local/nhsystem/kali-arm64
+BB=/system/xbin/busybox
+
+inroot() {
+    $BB chroot "$MNT" /bin/bash -c \
+      "export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin HOME=/root USER=root; $*"
+}
+
+ssh_prepare() {
+    # ключі хоста — один раз
+    inroot '[ -f /etc/ssh/ssh_host_ed25519_key ] || ssh-keygen -A >/dev/null 2>&1'
+    inroot 'mkdir -p /run/sshd /root/.ssh && chmod 700 /root/.ssh && chmod 755 /run/sshd'
+    inroot '[ -L /root/loot ] || { rm -rf /root/loot 2>/dev/null; ln -sf /loot /root/loot; }'
+}
+
+case "${1:-status}" in
+  start)
+      /system/bin/kali mount >/dev/null || exit 1
+      ssh_prepare
+      if inroot 'pgrep -x sshd >/dev/null'; then echo "[=] sshd уже працює"; else
+          inroot '/usr/sbin/sshd' && echo "[+] sshd запущено" || echo "[-] sshd не стартував"
+      fi
+      ;;
+  stop)
+      inroot 'pkill -x sshd' 2>/dev/null && echo "[+] sshd зупинено" || echo "[=] sshd не працював"
+      ;;
+  status)
+      printf 'sshd:    '; inroot 'pgrep -x sshd >/dev/null' && echo працює || echo зупинено
+      printf 'порт:    '; $BB netstat -tln 2>/dev/null | grep -q ":$PORT " && echo "$PORT слухає" || echo "$PORT не слухає"
+      ip -4 addr show wlan0 2>/dev/null | awk '/inet /{split($2,a,"/"); print "адреса: ssh root@"a[1]}'
+      ;;
+  key)
+      inroot 'cat /root/.ssh/authorized_keys 2>/dev/null || echo "(ключів немає)"'
+      ;;
+  log)
+      inroot 'tail -40 /var/log/auth.log 2>/dev/null || echo "(лог порожній)"'
+      ;;
+  *) echo "використання: kssh {start|stop|status|key|log}"; exit 1 ;;
+esac

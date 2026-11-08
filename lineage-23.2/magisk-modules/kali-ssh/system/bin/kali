@@ -1,0 +1,60 @@
+#!/system/bin/sh
+# kali — chroot Kali NetHunter: mount | umount | shell | status
+# Самодостатній: не залежить від скриптів застосунку NetHunter.
+
+BB=/system/xbin/busybox
+MNT=/data/local/nhsystem/kali-arm64
+LOOT=/data/media/0/Loot
+
+die() { echo "[-] $*"; exit 1; }
+[ -x "$BB" ] || die "busybox не знайдено ($BB)"
+[ -d "$MNT" ] || die "chroot Kali відсутній: $MNT"
+
+bindro() { $BB mountpoint -q "$2" || $BB mount -o bind "$1" "$2" 2>/dev/null; }
+
+k_mount() {
+    $BB mountpoint -q "$MNT/proc" && return 0
+    mkdir -p "$MNT/proc" "$MNT/sys" "$MNT/dev/pts" "$MNT/dev/shm" \
+             "$MNT/sdcard" "$MNT/loot" "$MNT/run" 2>/dev/null
+    mkdir -p "$LOOT" 2>/dev/null
+
+    $BB mount -t proc  proc  "$MNT/proc"
+    $BB mount -t sysfs sysfs "$MNT/sys"
+    $BB mount -o bind /dev   "$MNT/dev"
+    $BB mountpoint -q "$MNT/dev/pts" || $BB mount -t devpts devpts "$MNT/dev/pts"
+    $BB mountpoint -q "$MNT/dev/shm" || \
+        $BB mount -o rw,nosuid,nodev,mode=1777 -t tmpfs tmpfs "$MNT/dev/shm"
+    bindro /data/media/0 "$MNT/sdcard"
+    bindro "$LOOT"       "$MNT/loot"
+
+    # DNS із поточного підключення, інакше публічні резолвери
+    d1=$(getprop net.dns1); d2=$(getprop net.dns2)
+    { [ -n "$d1" ] && echo "nameserver $d1"
+      [ -n "$d2" ] && echo "nameserver $d2"
+      echo "nameserver 1.1.1.1"; } > "$MNT/etc/resolv.conf"
+    return 0
+}
+
+k_umount() {
+    for p in loot sdcard dev/shm dev/pts dev sys proc; do
+        $BB umount -l "$MNT/$p" 2>/dev/null
+    done
+}
+
+inroot() {
+    $BB chroot "$MNT" /bin/bash -c \
+      "export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+       HOME=/root USER=root TERM=${TERM:-xterm-256color} LANG=C.UTF-8; $*"
+}
+
+case "${1:-status}" in
+  mount)  k_mount && echo "[+] chroot змонтовано" ;;
+  umount) k_umount; echo "[+] chroot відмонтовано" ;;
+  shell)  k_mount; shift; [ $# -gt 0 ] && inroot "$@" || $BB chroot "$MNT" /bin/bash -l ;;
+  status)
+      printf 'chroot:  '; $BB mountpoint -q "$MNT/proc" && echo змонтовано || echo "НЕ змонтовано"
+      printf 'loot:    '; $BB mountpoint -q "$MNT/loot" && echo "/loot -> /sdcard/Loot" || echo "не прив'язано"
+      printf 'розмір:  '; du -sh "$MNT" 2>/dev/null | cut -f1
+      ;;
+  *) echo "використання: kali {mount|umount|shell [команда]|status}"; exit 1 ;;
+esac

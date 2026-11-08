@@ -1,0 +1,6 @@
+id=ath9k_nethunter
+name=USB drivers: Wi-Fi + Bluetooth + SDR + serial
+version=v3.0-lineage23.2
+versionCode=3
+author=RiasJ1Dar
+description=Драйвери зовнішніх USB-пристроїв: Wi-Fi (ath9k_htc, rt2800, rtl8xxxu, mt7601u, carl9170), Bluetooth (btusb), SDR/DVB (rtl2832_sdr) і USB-serial (CH341, CP210x, FTDI, PL2303). Потребує ядра з mac80211.

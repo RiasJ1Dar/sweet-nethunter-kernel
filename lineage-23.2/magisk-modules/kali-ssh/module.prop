@@ -1,0 +1,6 @@
+id=kali-ssh
+name=Kali chroot + SSH autostart
+version=v1.0
+versionCode=1
+author=RiasJ1Dar
+description=Команди kali і kssh: монтування chroot Kali, спільна тека /sdcard/Loot і sshd з автозапуском після перезавантаження.

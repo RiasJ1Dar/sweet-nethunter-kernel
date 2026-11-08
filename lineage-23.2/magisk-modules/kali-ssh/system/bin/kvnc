@@ -1,0 +1,83 @@
+#!/system/bin/sh
+# kvnc — графічний стіл Kali (NetHunter) у браузері.
+# Окремі порти від Stryker: дисплей :2, VNC 5902, веб 6081.
+# start | stop | status | log | url | passwd
+
+MNT=/data/local/nhsystem/kali-arm64
+BB=/system/xbin/busybox
+DISP=2
+VNCPORT=5902
+WEBPORT=6081
+GEOM=1440x810
+
+inroot() {
+    $BB chroot "$MNT" /bin/bash -c \
+      "export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin HOME=/root USER=root; $*"
+}
+
+ip_addr() { ip -4 -o addr show wlan0 2>/dev/null | awk '{split($4,a,"/"); print a[1]}'; }
+
+prepare() {
+    inroot 'mkdir -p /root/.vnc
+cat > /usr/local/bin/kvnc-xstartup <<"EOS"
+#!/bin/bash
+unset SESSION_MANAGER DBUS_SESSION_BUS_ADDRESS
+export XDG_RUNTIME_DIR=/tmp/runtime-root
+mkdir -p "$XDG_RUNTIME_DIR" && chmod 700 "$XDG_RUNTIME_DIR"
+[ -s /etc/machine-id ] || dbus-uuidgen --ensure=/etc/machine-id 2>/dev/null
+exec dbus-launch --exit-with-session startxfce4
+EOS
+chmod +x /usr/local/bin/kvnc-xstartup'
+}
+
+case "${1:-status}" in
+  start)
+      /system/bin/kali mount >/dev/null || exit 1
+      # KeX зберігає пароль користувачу kali — переймаємо його, щоб пароль був один.
+      inroot '[ -f /root/.vnc/passwd ] || { [ -f /home/kali/.vnc/passwd ] && \
+              mkdir -p /root/.vnc && cp /home/kali/.vnc/passwd /root/.vnc/passwd && \
+              chmod 600 /root/.vnc/passwd; }'
+      inroot '[ -f /root/.vnc/passwd ]' || {
+          echo "[-] пароля VNC немає — задай його: kvnc passwd"; exit 1; }
+      prepare
+      if inroot "pgrep -f '[X]tigervnc :$DISP' >/dev/null"; then
+          echo "[=] стіл уже працює"
+      else
+          inroot "tigervncserver :$DISP -geometry $GEOM -depth 24 -localhost no \
+                  -xstartup /usr/local/bin/kvnc-xstartup 2>&1 | tail -3"
+      fi
+      if inroot "pgrep -f '[w]ebsockify.*$WEBPORT' >/dev/null"; then
+          echo "[=] веб-міст уже працює"
+      else
+          inroot "websockify -D --web=/usr/share/novnc $WEBPORT localhost:$VNCPORT" \
+              && echo "[+] веб-міст піднято"
+      fi
+      "$0" url
+      ;;
+  stop)
+      inroot "pkill -f '[w]ebsockify.*$WEBPORT'" 2>/dev/null
+      inroot "tigervncserver -kill :$DISP 2>&1 | tail -1"
+      echo "[+] зупинено"
+      ;;
+  status)
+      printf 'Xtigervnc: '; inroot "pgrep -f '[X]tigervnc :$DISP' >/dev/null" && echo працює || echo зупинено
+      printf 'xfwm4:     '; inroot 'pgrep -x xfwm4 >/dev/null' && echo працює || echo зупинено
+      printf 'websockify:'; inroot "pgrep -f '[w]ebsockify.*$WEBPORT' >/dev/null" && echo " працює" || echo " зупинено"
+      printf 'порти:     '; $BB netstat -tln 2>/dev/null | grep -qE ":$VNCPORT " && printf "$VNCPORT " || printf "—(VNC) "
+      $BB netstat -tln 2>/dev/null | grep -qE ":$WEBPORT " && echo "$WEBPORT" || echo "—(веб)"
+      ;;
+  url)
+      a=$(ip_addr); [ -z "$a" ] && a="<IP телефона>"
+      echo "браузер:   http://$a:$WEBPORT/vnc.html"
+      echo "VNC-клієнт: $a:$VNCPORT"
+      ;;
+  passwd)
+      /system/bin/kali mount >/dev/null
+      $BB chroot "$MNT" /bin/bash -c \
+        'export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin HOME=/root; vncpasswd'
+      ;;
+  log)
+      inroot "tail -30 /root/.vnc/*:$DISP.log 2>/dev/null || echo '(лога немає)'"
+      ;;
+  *) echo "використання: kvnc {start|stop|status|log|url|passwd}"; exit 1 ;;
+esac
